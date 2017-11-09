@@ -1,0 +1,19 @@
+{
+    "name": "prune-mazui/zephir-ide-helper",
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PruneMazui\\ZephirIdeHelper\\" : "src"
+        }
+    },
+    "scripts": {
+        "pre-update-cmd": [
+            "php -r \"if (!function_exists('zephir_parse_file')) {throw new \\Exception();}\""
+        ]
+    }
+}
