@@ -1,7 +1,9 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class PropertyElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+
+class PropertyElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'property';
 
@@ -28,5 +30,14 @@ class PropertyElement extends AbstractNamedElement
         $ret->visibility = $params['visibility'] ?? [];
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        return implode(' ', $this->visibility) . ' $' . $this->getName() . ";\n";
     }
 }

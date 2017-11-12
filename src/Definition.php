@@ -5,7 +5,7 @@ use PruneMazui\ZephirIdeHelper\Element\NamespaceElement;
 use PruneMazui\ZephirIdeHelper\Element\UseElement;
 use PruneMazui\ZephirIdeHelper\Element\ClassElement;
 
-class Definition
+class Definition implements EncodableInterface
 {
     const TYPE_NEXT_CLASS_COMMENT = 'comment';
 
@@ -71,5 +71,16 @@ class Definition
         $this->namespaces[] = $namespace;
 
         return $this;
+    }
+
+    public function encode(): string
+    {
+        $content = "<?php\n";
+
+        foreach ($this->namespaces as $namespace) {
+            $content .= $namespace->encode();
+        }
+
+        return $content;
     }
 }

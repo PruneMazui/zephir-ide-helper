@@ -1,7 +1,9 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class UseElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+
+class UseElement implements EncodableInterface
 {
     const TYPE = 'use';
 
@@ -43,5 +45,14 @@ class UseElement
         }
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        return 'use ' . implode(', ', $this->aliases) . ";\n";
     }
 }

@@ -1,7 +1,10 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class MethodElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\Util;
+
+class MethodElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'method';
 
@@ -105,15 +108,6 @@ class MethodElement extends AbstractNamedElement
     }
 
     /**
-     * @param       string $str
-     * @return      string
-     */
-    private static function camelize($str): string
-    {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $str)));
-    }
-
-    /**
      * @param array $params
      * @throws \RuntimeException
      * @return self
@@ -172,7 +166,7 @@ class MethodElement extends AbstractNamedElement
         if (! strlen($name)) {
             throw new \RuntimeException('property name is required.');
         }
-        $name_camelized = self::camelize($name);
+        $name_camelized = Util::camelize($name);
 
         foreach ($shortcuts as $shortcut) {
             switch ($shortcut['name'] ?? '') {
@@ -198,5 +192,48 @@ class MethodElement extends AbstractNamedElement
         }
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        $content = '';
+
+        if (strlen($this->comment)) {
+            // @todo
+            // $content .= $this->comment . "\n";
+        }
+
+        if ($this->isAbstract) {
+            $content .= 'abstract ';
+        }
+
+        if ($this->isFinal) {
+            $content .= 'final ';
+        }
+
+        if ($this->isPublic) {
+            $content .= 'public ';
+        } else {
+            $content .= 'protected ';
+        }
+
+        if ($this->isStatic) {
+            $content .= 'static ';
+        }
+
+        $content .= 'function ' . $this->getName() . " (";
+
+        $argment = [];
+        foreach ($this->arguments as $argument) {
+            $argment[] = $argument->encode();
+        }
+        $content .= implode(', ', $argment);
+        $content .= ")\n{" . "}\n";
+
+        return $content;
     }
 }

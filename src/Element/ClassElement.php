@@ -2,7 +2,10 @@
 namespace PruneMazui\ZephirIdeHelper\Element;
 
 
-class ClassElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\Util;
+
+class ClassElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'class';
 
@@ -133,5 +136,55 @@ class ClassElement extends AbstractNamedElement
         }
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        $content = '';
+
+        if (strlen($this->comment)) {
+            // @todo
+            // $content .= $this->comment . "\n";
+        }
+
+        if ($this->isAbstract) {
+            $content .= 'abstract ';
+        }
+
+        if ($this->isFinal) {
+            $content .= 'final ';
+        }
+
+        $content .= 'class ' . $this->getName() . ' ';
+
+        if (strlen($this->extends)) {
+            $content .= 'extends ' . $this->extends . ' ';
+        }
+
+        if (count($this->implements)) {
+            $content .= 'implements ' . implode(', ', $this->implements) . ' ';
+        }
+
+        $content .= "{\n";
+
+        foreach ($this->constants as $constant) {
+            $content .= Util::indent($constant->encode() . "\n");
+        }
+
+        foreach ($this->properties as $property) {
+            $content .= Util::indent($property->encode() . "\n");
+        }
+
+        foreach ($this->methods as $method) {
+            $content .= Util::indent($method->encode() . "\n");
+        }
+
+        $content .= "}\n";
+
+        return $content;
     }
 }

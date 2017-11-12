@@ -1,7 +1,9 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class ConstantElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+
+class ConstantElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'const';
 
@@ -33,5 +35,15 @@ class ConstantElement extends AbstractNamedElement
         $ret->value = $params['default']['value'];
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        // @todo see type
+        return 'const ' . $this->getName() . ' = ' . $this->value . ";\n";
     }
 }

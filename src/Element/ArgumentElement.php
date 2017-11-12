@@ -1,7 +1,9 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class ArgumentElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+
+class ArgumentElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'parameter';
 
@@ -91,5 +93,26 @@ class ArgumentElement extends AbstractNamedElement
         $ret->defaultValue = $params['default']['value'] ?? null;
 
         return $ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        $content = '';
+
+        if ($this->dataType) {
+            $content .= $this->dataType . ' ';
+        }
+
+        $content .= '$' . $this->getName();
+
+        if ($this->hasDefault) {
+            // @todo
+        }
+
+        return $content;
     }
 }

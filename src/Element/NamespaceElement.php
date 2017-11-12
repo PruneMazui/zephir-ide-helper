@@ -1,7 +1,10 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper\Element;
 
-class NamespaceElement extends AbstractNamedElement
+use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\Util;
+
+class NamespaceElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'namespace';
 
@@ -113,5 +116,28 @@ class NamespaceElement extends AbstractNamedElement
     {
         $this->uses[] = $use;
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
+     */
+    public function encode(): string
+    {
+        $content = 'namespace ' . $this->getName() . "\n{\n";
+
+        foreach ($this->uses as $use) {
+            $content .= Util::indent($use->encode());
+        }
+
+        $content .= "\n";
+
+        foreach ($this->classes as $class) {
+            $content .= Util::indent($class->encode()) . "\n";
+        }
+
+        $content.= "}\n";
+
+        return $content;
     }
 }
