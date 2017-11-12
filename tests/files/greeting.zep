@@ -1,5 +1,6 @@
 namespace Utils;
 
+use Exception;
 
 /**
  * Sample class Greeting
