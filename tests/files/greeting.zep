@@ -1,6 +1,6 @@
-namespace Utils;
+namespace PruneMazui\Zephir\Utils;
 
-use Exception;
+use Exception as Ex, Exception;
 
 /**
  * Sample class Greeting

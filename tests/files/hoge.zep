@@ -1,4 +1,4 @@
-namespace Utils;
+namespace PruneMazui\Zephir\Utils;
 
 
 /**

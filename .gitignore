@@ -3,3 +3,6 @@
 /composer.lock
 /.settings
 /.buildpath
+/phpunit.xml
+__zephir_ide_helper.php
+/report

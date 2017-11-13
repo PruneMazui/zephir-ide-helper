@@ -41,7 +41,13 @@ class UseElement implements EncodableInterface
                 continue;
             }
 
-            $ret->aliases[] = $aliase['name'];
+            $content = $aliase['name'];
+
+            if (! empty($aliase['alias'])) {
+                $content .= ' as ' . $aliase['alias'];
+            }
+
+            $ret->aliases[] = $content;
         }
 
         return $ret;
