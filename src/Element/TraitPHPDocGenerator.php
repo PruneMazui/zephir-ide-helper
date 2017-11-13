@@ -27,19 +27,29 @@ trait TraitPHPDocGenerator
             }
         }
 
-        if ($element->isAbstract() && !in_array('@abstract', $annotation)) {
+        $hasStartWith = function ($actual) use ($annotation) {
+            foreach ($annotation as $target) {
+                if (strpos($target, $actual) === 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        if ($element->isAbstract() && !$hasStartWith('@abstract')) {
             $annotation[] = '@abstract';
         }
 
-        if ($element->isDeprecated() && !in_array('@deprecated', $annotation)) {
+        if ($element->isDeprecated() && !$hasStartWith('@deprecated')) {
             $annotation[] = '@deprecated';
         }
 
-        if ($element->isFinal() && !in_array('@final', $annotation)) {
+        if ($element->isFinal() && !$hasStartWith('@final')) {
             $annotation[] = '@final';
         }
 
-        if ($element->isStatic() && !in_array('@static', $annotation)) {
+        if ($element->isStatic() && !$hasStartWith('@static')) {
             $annotation[] = '@static';
         }
 
