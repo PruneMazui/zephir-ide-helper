@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, inline: <<-SHELL
     yum install -y epel-release
     yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-    yum install -y --enablerepo=remi-php71 php php-devel php-xml php-pecl-zip php-pdo php-mbstring
+    yum install -y --enablerepo=remi-php71 php php-devel php-xml php-pecl-zip php-pdo php-mbstring php-pecl-xdebug
     yum install -y gcc-c++ make automake re2c autoconf git unzip
     
     cd /usr/local/src
