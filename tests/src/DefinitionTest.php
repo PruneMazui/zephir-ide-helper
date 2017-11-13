@@ -26,7 +26,7 @@ class DefinitionTest extends TestCase
         assertCount(1, $definition->getNamespaces());
 
         $namespace = $definition->getNamespaces()[0];
-        assertCount(1, $namespace->getUses());
+        assertCount(2, $namespace->getUses());
         assertCount(1, $namespace->getClasses());
 
         $class = $namespace->getClasses()[0];
@@ -35,7 +35,7 @@ class DefinitionTest extends TestCase
 
         assertCount(1, $class->getConstants());
         assertCount(2, $class->getProperties());
-        assertCount(7, $class->getMethods()); // shutcut(get, get, set, toString + method(3)
+        assertCount(8, $class->getMethods()); // shutcut(get, get, set, toString + method(4)
 
         assertFalse(class_exists('\\PruneMazui\\Zephir\\Utils\\Greeting'));
 

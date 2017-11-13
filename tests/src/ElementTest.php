@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use PruneMazui\ZephirIdeHelper\Element\NamespaceElement;
 use PruneMazui\ZephirIdeHelper\Element\ArgumentElement;
 use PruneMazui\ZephirIdeHelper\Element\MethodElement;
+use PruneMazui\ZephirIdeHelper\Element\DefaultValueElement;
 
 class ElementTest extends TestCase
 {
@@ -26,7 +27,7 @@ class ElementTest extends TestCase
     {
         $arg = ArgumentElement::factory('hoge');
         assertEquals('hoge', $arg->getName());
-        assertFalse($arg->hasDefault());
+        assertFalse($arg->hasDefaultValue());
         assertNull($arg->getDataType());
 
         $params = [
@@ -42,8 +43,8 @@ class ElementTest extends TestCase
 
         $arg = ArgumentElement::factory($params);
         assertEquals('fuga', $arg->getName());
-        assertTrue($arg->hasDefault());
-        assertEquals('null', $arg->getDefaultType());
+        assertTrue($arg->hasDefaultValue());
+        assertInstanceOf(DefaultValueElement::class, $arg->getDefaultValue());
         assertEquals('array', $arg->getDataType());
     }
 

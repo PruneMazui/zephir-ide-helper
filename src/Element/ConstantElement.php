@@ -7,9 +7,26 @@ class ConstantElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'const';
 
-    private $value_type = '';
+    /**
+     * @var DefaultValueElement
+     */
+    private $defaultValue;
 
-    private $value = '';
+    /**
+     * @return bool
+     */
+    public function hasDefaultValue(): bool
+    {
+        return $this->defaultValue instanceof DefaultValueElement;
+    }
+
+    /**
+     * @return DefaultValueElement
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
 
     /**
      * @param array $params
@@ -31,8 +48,7 @@ class ConstantElement extends AbstractNamedElement implements EncodableInterface
             throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
-        $ret->value_type = $params['default']['type'];
-        $ret->value = $params['default']['value'];
+        $ret->defaultValue = DefaultValueElement::factory($params['default']);
 
         return $ret;
     }
@@ -44,6 +60,6 @@ class ConstantElement extends AbstractNamedElement implements EncodableInterface
     public function encode(): string
     {
         // @todo see type
-        return 'const ' . $this->getName() . ' = ' . $this->value . ";\n";
+        return 'const ' . $this->getName() . ' = ' . $this->defaultValue->encode() . ";\n";
     }
 }

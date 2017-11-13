@@ -54,5 +54,6 @@ class ParserTest extends TestCase
         $excepted = include __DIR__ . '/../files/parse_result.php';
 
         assertEquals($excepted, (new Parser())->parse($file));
+
     }
 }

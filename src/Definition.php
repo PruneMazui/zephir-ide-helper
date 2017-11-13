@@ -61,7 +61,6 @@ class Definition implements EncodableInterface
                     $comment = $row['value'];
                     break;
 
-                case NamespaceElement::TYPE:
                 default:
                     break;
             }

@@ -11,32 +11,23 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
         'variable'
     ];
 
-    private $hasDefault = false;
-
-    private $defaultType = null;
-
-    private $defaultValue = null;
-
     private $dataType = null;
 
     /**
-     * @return boolean
+     * @var DefaultValueElement
      */
-    public function hasDefault(): bool
+    private $defaultValue = null;
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultValue(): bool
     {
-        return $this->hasDefault;
+        return $this->defaultValue instanceof DefaultValueElement;
     }
 
     /**
-     * @return string
-     */
-    public function getDefaultType(): string
-    {
-        return $this->defaultType;
-    }
-
-    /**
-     * @return mixed
+     * @return DefaultValueElement | null
      */
     public function getDefaultValue()
     {
@@ -88,9 +79,7 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
             return $ret;
         }
 
-        $ret->hasDefault = true;
-        $ret->defaultType = $params['default']['type'];
-        $ret->defaultValue = $params['default']['value'] ?? null;
+        $ret->defaultValue = DefaultValueElement::factory($params['default']);
 
         return $ret;
     }
@@ -109,8 +98,8 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
 
         $content .= '$' . $this->getName();
 
-        if ($this->hasDefault) {
-            // @todo
+        if ($this->hasDefaultValue()) {
+            $content .= ' = ' . $this->getDefaultValue()->encode();
         }
 
         return $content;
