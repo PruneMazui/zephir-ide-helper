@@ -2,6 +2,7 @@
 namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class PropertyElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
@@ -68,12 +69,12 @@ class PropertyElement extends AbstractNamedElement implements EncodableInterface
 
         $ret->name = $params['name'] ?? '';
         if (! strlen($ret->name)) {
-            throw new \RuntimeException('property name is required.');
+            throw new DefinitionException('property name is required.');
         }
 
         $type = $params['type'] ?? '';
         if ($type !== self::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $ret->visibility = $params['visibility'] ?? [];

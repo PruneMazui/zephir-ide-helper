@@ -3,6 +3,7 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 use PruneMazui\ZephirIdeHelper\Util;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class MethodElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
@@ -111,7 +112,7 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
 
     /**
      * @param array $params
-     * @throws \RuntimeException
+     * @throws DefinitionException
      * @return self
      */
     public static function factory(array $params): self
@@ -120,12 +121,12 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
 
         $ret->name = $params['name'] ?? '';
         if (! strlen($ret->name)) {
-            throw new \RuntimeException('method name is required.');
+            throw new DefinitionException('method name is required.');
         }
 
         $type = $params['type'] ?? '';
         if ($type !== self::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $visibility = $params['visibility'] ?? [];
@@ -147,14 +148,14 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
 
     /**
      * @param array $params
-     * @throws \RuntimeException
+     * @throws DefinitionException
      * @return self[]
      */
     public static function factoryAllPropertyShortCuts(array $params): array
     {
         $type = $params['type'] ?? '';
         if ($type !== PropertyElement::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $shortcuts = $params['shortcuts'] ?? [];
@@ -166,7 +167,7 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
 
         $name = $params['name'] ?? '';
         if (! strlen($name)) {
-            throw new \RuntimeException('property name is required.');
+            throw new DefinitionException('property name is required.');
         }
         $name_camelized = Util::camelize($name);
 

@@ -3,6 +3,7 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 use PruneMazui\ZephirIdeHelper\Util;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class NamespaceElement extends AbstractNamedElement implements EncodableInterface
 {
@@ -20,14 +21,14 @@ class NamespaceElement extends AbstractNamedElement implements EncodableInterfac
 
     /**
      * @param array $param
-     * @throws \LogicException
+     * @throws DefinitionException
      * @return self
      */
     public static function factory(array $params): self
     {
         $type = $params['type'] ?? '';
         if ($type !== self::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $name = $params['name'] ?? '';

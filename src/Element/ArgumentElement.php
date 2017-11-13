@@ -2,6 +2,7 @@
 namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class ArgumentElement extends AbstractNamedElement implements EncodableInterface
 {
@@ -57,12 +58,12 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
         }
 
         if (! is_array($params)) {
-            throw new \LogicException('invalid argument');
+            throw new DefinitionException('invalid argument');
         }
 
         $type = $params['type'] ?? '';
         if ($type !== self::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $data_type = $params['data-type'] ?? null;
@@ -72,7 +73,7 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
 
         $ret->name = $params['name'] ?? '';
         if (! strlen($ret->name)) {
-            throw new \RuntimeException('parameter name is required.');
+            throw new DefinitionException('parameter name is required.');
         }
 
         if (! isset($params['default'])) {

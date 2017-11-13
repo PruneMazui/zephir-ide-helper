@@ -2,6 +2,7 @@
 namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class UseElement implements EncodableInterface
 {
@@ -22,7 +23,7 @@ class UseElement implements EncodableInterface
 
     /**
      * @param array $param
-     * @throws \LogicException
+     * @throws DefinitionException
      * @return self
      */
     public static function factory(array $param): self
@@ -30,7 +31,7 @@ class UseElement implements EncodableInterface
         $type = $param['type'] ?? '';
 
         if ($type !== self::TYPE) {
-            throw new \LogicException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
         $ret = new self();

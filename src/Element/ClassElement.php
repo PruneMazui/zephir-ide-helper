@@ -4,6 +4,7 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 use PruneMazui\ZephirIdeHelper\Util;
+use PruneMazui\ZephirIdeHelper\DefinitionException;
 
 class ClassElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
@@ -132,7 +133,7 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface, P
 
         $ret->name = $params['name'] ?? '';
         if (! strlen($ret->name)) {
-            throw new \RuntimeException('class name is required.');
+            throw new DefinitionException('class name is required.');
         }
 
         $ret->isAbstract = $params['abstract'] ?? false;
