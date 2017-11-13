@@ -3,14 +3,66 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 
-class ConstantElement extends AbstractNamedElement implements EncodableInterface
+class ConstantElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
+    use TraitPHPDocGenerator;
+
     const TYPE = 'const';
 
     /**
      * @var DefaultValueElement
      */
     private $defaultValue;
+
+    /**
+     * @var string
+     */
+    private $comment = '';
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isDeprecated()
+     */
+    public function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isStatic()
+     */
+    public function isStatic(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::getComment()
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isFinal()
+     */
+    public function isFinal(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isAbstract()
+     */
+    public function isAbstract(): bool
+    {
+        return false;
+    }
 
     /**
      * @return bool
@@ -49,6 +101,7 @@ class ConstantElement extends AbstractNamedElement implements EncodableInterface
         }
 
         $ret->defaultValue = DefaultValueElement::factory($params['default']);
+        $ret->comment = $params['docblock'] ?? '';
 
         return $ret;
     }
@@ -59,7 +112,12 @@ class ConstantElement extends AbstractNamedElement implements EncodableInterface
      */
     public function encode(): string
     {
-        // @todo see type
-        return 'const ' . $this->getName() . ' = ' . $this->defaultValue->encode() . ";\n";
+        $content = $this->generatorPHPDoc($this);
+
+        if (strlen($content)) {
+            $content .= "\n";
+        }
+
+        return $content . 'const ' . $this->getName() . ' = ' . $this->defaultValue->encode() . ";\n";
     }
 }

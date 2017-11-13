@@ -4,8 +4,10 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 use PruneMazui\ZephirIdeHelper\Util;
 
-class MethodElement extends AbstractNamedElement implements EncodableInterface
+class MethodElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
+    use TraitPHPDocGenerator;
+
     const TYPE = 'method';
 
     /**
@@ -200,11 +202,10 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface
      */
     public function encode(): string
     {
-        $content = '';
+        $content = $this->generatorPHPDoc($this);
 
-        if (strlen($this->comment)) {
-            // @todo
-            // $content .= $this->comment . "\n";
+        if (strlen($content)) {
+            $content .= "\n";
         }
 
         if ($this->isAbstract) {
@@ -225,7 +226,7 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface
             $content .= 'static ';
         }
 
-        $content .= 'function ' . $this->getName() . " (";
+        $content .= 'function ' . $this->getName() . "(";
 
         $argment = [];
         foreach ($this->arguments as $argument) {

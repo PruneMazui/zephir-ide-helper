@@ -3,11 +3,60 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 
-class PropertyElement extends AbstractNamedElement implements EncodableInterface
+class PropertyElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
+    use TraitPHPDocGenerator;
+
     const TYPE = 'property';
 
     private $visibility = [];
+
+    private $comment = '';
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isDeprecated()
+     */
+    public function isDeprecated(): bool
+    {
+        return in_array('deprecated', $this->visibility);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isStatic()
+     */
+    public function isStatic(): bool
+    {
+        return in_array('static', $this->visibility);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::getComment()
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isFinal()
+     */
+    public function isFinal(): bool
+    {
+        return in_array('final', $this->visibility);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isAbstract()
+     */
+    public function isAbstract(): bool
+    {
+        return in_array('abstract', $this->visibility);
+    }
 
     /**
      * @param array $params
@@ -28,6 +77,7 @@ class PropertyElement extends AbstractNamedElement implements EncodableInterface
         }
 
         $ret->visibility = $params['visibility'] ?? [];
+        $ret->comment = $params['docblock'] ?? '';
 
         return $ret;
     }
@@ -38,6 +88,12 @@ class PropertyElement extends AbstractNamedElement implements EncodableInterface
      */
     public function encode(): string
     {
-        return implode(' ', $this->visibility) . ' $' . $this->getName() . ";\n";
+        $content = $this->generatorPHPDoc($this);
+
+        if (strlen($content)) {
+            $content .= "\n";
+        }
+
+        return $content . implode(' ', $this->visibility) . ' $' . $this->getName() . ";\n";
     }
 }

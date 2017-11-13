@@ -5,8 +5,10 @@ namespace PruneMazui\ZephirIdeHelper\Element;
 use PruneMazui\ZephirIdeHelper\EncodableInterface;
 use PruneMazui\ZephirIdeHelper\Util;
 
-class ClassElement extends AbstractNamedElement implements EncodableInterface
+class ClassElement extends AbstractNamedElement implements EncodableInterface, PHPDocSupportInterface
 {
+    use TraitPHPDocGenerator;
+
     const TYPE = 'class';
 
     /**
@@ -55,6 +57,42 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isDeprecated()
+     */
+    public function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isStatic()
+     */
+    public function isStatic(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isFinal()
+     */
+    public function isFinal(): bool
+    {
+        return $this->isFinal;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \PruneMazui\ZephirIdeHelper\Element\PHPDocSupportInterface::isAbstract()
+     */
+    public function isAbstract(): bool
+    {
+        return $this->isAbstract;
     }
 
     /**
@@ -144,11 +182,10 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface
      */
     public function encode(): string
     {
-        $content = '';
+        $content = $this->generatorPHPDoc($this);
 
-        if (strlen($this->comment)) {
-            // @todo
-            // $content .= $this->comment . "\n";
+        if (strlen($content)) {
+            $content .= "\n";
         }
 
         if ($this->isAbstract) {
@@ -169,7 +206,7 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface
             $content .= 'implements ' . implode(', ', $this->implements) . ' ';
         }
 
-        $content .= "{\n";
+        $content .= "\n{\n";
 
         foreach ($this->constants as $constant) {
             $content .= Util::indent($constant->encode() . "\n");
