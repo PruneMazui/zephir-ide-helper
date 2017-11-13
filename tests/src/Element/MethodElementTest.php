@@ -4,7 +4,7 @@ namespace PruneMazui\ZephirIdeHelper\Element\Tests;
 use PHPUnit\Framework\TestCase;
 use PruneMazui\ZephirIdeHelper\Element\MethodElement;
 
-class MethodTest extends TestCase
+class MethodElementTest extends TestCase
 {
     public function testSuccess()
     {

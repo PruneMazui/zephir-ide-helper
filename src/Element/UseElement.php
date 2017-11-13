@@ -39,7 +39,7 @@ class UseElement implements EncodableInterface
 
         foreach ($aliases as $aliase) {
             if (empty($aliase['name'])) {
-                continue;
+                throw new DefinitionException('aliase name is required.');
             }
 
             $content = $aliase['name'];
@@ -60,6 +60,6 @@ class UseElement implements EncodableInterface
      */
     public function encode(): string
     {
-        return 'use ' . implode(', ', $this->aliases) . ";\n";
+        return 'use ' . implode(', ', $this->getAliases()) . ";\n";
     }
 }

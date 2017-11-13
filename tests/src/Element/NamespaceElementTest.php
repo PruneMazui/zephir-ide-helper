@@ -4,7 +4,7 @@ namespace PruneMazui\ZephirIdeHelper\Element\Tests;
 use PruneMazui\ZephirIdeHelper\Element\NamespaceElement;
 use PHPUnit\Framework\TestCase;
 
-class NamespaceTest extends TestCase
+class NamespaceElementTest extends TestCase
 {
     public function testSuccess()
     {
