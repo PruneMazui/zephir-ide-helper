@@ -138,7 +138,7 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface, P
         $ret->isAbstract = $params['abstract'] ?? false;
         $ret->isFinal = $params['final'] ?? false;
 
-        $ret->extends = $params['extends'];
+        $ret->extends = $params['extends'] ?? '';
 
         $implements = $params['implements'] ?? [];
         foreach ($implements as $implement) {
