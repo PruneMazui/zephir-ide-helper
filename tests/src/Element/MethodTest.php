@@ -1,54 +1,12 @@
 <?php
-namespace PruneMazui\ZephirIdeHelper\Tests;
+namespace PruneMazui\ZephirIdeHelper\Element\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PruneMazui\ZephirIdeHelper\Element\NamespaceElement;
-use PruneMazui\ZephirIdeHelper\Element\ArgumentElement;
 use PruneMazui\ZephirIdeHelper\Element\MethodElement;
-use PruneMazui\ZephirIdeHelper\Element\DefaultValueElement;
 
-class ElementTest extends TestCase
+class MethodTest extends TestCase
 {
-    public function testNamespace()
-    {
-        $params = [
-            'type' => 'namespace',
-            'name' => 'Phalcon'
-        ];
-
-        $namespace = NamespaceElement::factory($params);
-
-        assertEquals($params['name'], $namespace->getName());
-        assertFalse($namespace->hasClass());
-        assertFalse($namespace->hasUse());
-    }
-
-    public function testArgument()
-    {
-        $arg = ArgumentElement::factory('hoge');
-        assertEquals('hoge', $arg->getName());
-        assertFalse($arg->hasDefaultValue());
-        assertNull($arg->getDataType());
-
-        $params = [
-            'type' => 'parameter',
-            'name' => 'fuga',
-            'const' => 0,
-            'data-type' => 'array',
-            'mandatory' => 0,
-            'default' => [
-                'type' => 'null'
-            ]
-        ];
-
-        $arg = ArgumentElement::factory($params);
-        assertEquals('fuga', $arg->getName());
-        assertTrue($arg->hasDefaultValue());
-        assertInstanceOf(DefaultValueElement::class, $arg->getDefaultValue());
-        assertEquals('array', $arg->getDataType());
-    }
-
-    public function testMethod()
+    public function testSuccess()
     {
         $params = [
             'visibility' => [
