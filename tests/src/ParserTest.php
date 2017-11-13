@@ -52,8 +52,27 @@ class ParserTest extends TestCase
         $file = __DIR__ . '/../files/greeting.zep';
 
         $excepted = include __DIR__ . '/../files/parse_result.php';
+        $result = (new Parser())->parse($file);
 
-        assertEquals($excepted, (new Parser())->parse($file));
+        $excepted = $this->excludeIgnoreParseResult($excepted);
+        $result = $this->excludeIgnoreParseResult($result);
 
+        assertEquals($excepted, $result);
+    }
+
+    private function excludeIgnoreParseResult(array $result)
+    {
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = $this->excludeIgnoreParseResult($value);
+                continue;
+            }
+
+            if ($key === 'file' || $key === 'line' || $key === 'char') {
+                unset($result[$key]);
+            }
+        }
+
+        return $result;
     }
 }
