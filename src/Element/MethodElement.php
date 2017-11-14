@@ -47,6 +47,11 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
     private $comment = '';
 
     /**
+     * @var bool
+     */
+    private $belongInterface = false;
+
+    /**
      * @return bool
      */
     public function isPublic(): bool
@@ -112,10 +117,11 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
 
     /**
      * @param array $params
+     * @param bool optional $belong_interface
      * @throws DefinitionException
      * @return self
      */
-    public static function factory(array $params): self
+    public static function factory(array $params, bool $belong_interface = false): self
     {
         $ret = new self();
 
@@ -129,11 +135,15 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
             throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
         }
 
+        $ret->belongInterface = $belong_interface;
+
         $visibility = $params['visibility'] ?? [];
-        $ret->isPublic = in_array('public', $visibility);
-        $ret->isStatic = in_array('static', $visibility);
-        $ret->isFinal = in_array('final', $visibility);
-        $ret->isAbstract = in_array('abstract', $visibility);
+        if (! $belong_interface) {
+            $ret->isPublic = in_array('public', $visibility);
+            $ret->isStatic = in_array('static', $visibility);
+            $ret->isFinal = in_array('final', $visibility);
+            $ret->isAbstract = in_array('abstract', $visibility);
+        }
         $ret->isDeprecated = in_array('deprecated', $visibility);
 
         $parameters = $params['parameters'] ?? [];
@@ -234,7 +244,7 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
             $argment[] = $argument->encode();
         }
         $content .= implode(', ', $argment);
-        $content .= ")\n{" . "}\n";
+        $content .= $this->isAbstract || $this->belongInterface ? ");\n" : ")\n{" . "}\n";
 
         return $content;
     }

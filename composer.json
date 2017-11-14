@@ -9,16 +9,12 @@
         "php": ">=7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4"
+        "phpunit/phpunit": "^6.4",
+        "php-coveralls/php-coveralls": "^1.0"
     },
     "autoload": {
         "psr-4": {
             "PruneMazui\\ZephirIdeHelper\\" : "src"
         }
-    },
-    "scripts": {
-        "pre-update-cmd": [
-            "php -r \"if (!function_exists('zephir_parse_file')) {throw new \\Exception();}\""
-        ]
     }
 }

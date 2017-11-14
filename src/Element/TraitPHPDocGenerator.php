@@ -14,11 +14,7 @@ trait TraitPHPDocGenerator
         $comment = [];
 
         foreach (explode("\n", $origin) as $line) {
-            $line = trim($line, "* \t\n\r\0\x0B");
-
-            if (! strlen($line)) {
-                continue;
-            }
+            $line = preg_replace('/^\s*\*+\s?/', '', $line);
 
             if (preg_match('/^@/', $line)) {
                 $annotation[] = $line;
@@ -56,6 +52,19 @@ trait TraitPHPDocGenerator
         if (! array_filter($annotation) && ! array_filter($comment)) {
             return "";
         }
+
+        $fix_array = function (array $arr) {
+            if (! count($arr)) {
+                return $arr;
+            }
+
+            $content = implode("\n", $arr);
+            return explode("\n", trim($content));
+        };
+
+        $comment = $fix_array($comment);
+        $annotation = $fix_array($annotation);
+
 
         $ret = "/**\n";
 

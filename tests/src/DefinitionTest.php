@@ -18,7 +18,7 @@ class DefinitionTest extends TestCase
 
     public function testAllFlow()
     {
-        $parse_result = include __DIR__ . '/../files/parse_result.php';
+        $parse_result = include __DIR__ . '/../files/greeting_parse_result.php';
 
         $definition = new Definition();
         $definition->reflectParse($parse_result);

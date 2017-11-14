@@ -136,6 +136,11 @@ class ClassElement extends AbstractNamedElement implements EncodableInterface, P
             throw new DefinitionException('class name is required.');
         }
 
+        $type = $params['type'] ?? '';
+        if ($type !== self::TYPE) {
+            throw new DefinitionException('Not match type ' . self::TYPE . ' AND ' . $type . '.');
+        }
+
         $ret->isAbstract = $params['abstract'] ?? false;
         $ret->isFinal = $params['final'] ?? false;
 

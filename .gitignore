@@ -8,3 +8,4 @@ __zephir_ide_helper.php
 /report
 /.vagrant
 /develop
+/tests/files/output.php
