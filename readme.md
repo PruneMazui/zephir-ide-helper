@@ -5,6 +5,7 @@ zephir-ide-helper
 [![Coverage Status](https://coveralls.io/repos/github/PruneMazui/zephir-ide-helper/badge.svg?branch=master)](https://coveralls.io/github/PruneMazui/zephir-ide-helper?branch=master)
 
 Generate php code completion file from zephir file(.zep).
+
 The code completion file is valid in the IDE (ex. PHPStorm).
 
 
@@ -101,12 +102,12 @@ vendor/bin/zephir-ide-helper [-option] target
 
 #### target
 
-Specify the Zephir file or directory.
-If you specify a directory, read the directory recursively and look for the Zephir file.
+Specify the Zephir file or directory.  
+If you specify a directory, read the directory recursively and look for the Zephir file.  
 
-#### Option
+#### -option
 
-* -f(--file) ... Specify the PHP file name to output(Default: \_\_zephir\_ide\_helper.php).
+* `-f`(`--file`) ... Specify the PHP file name to output(Default: \_\_zephir\_ide\_helper.php).
 
 
 ## Licence
