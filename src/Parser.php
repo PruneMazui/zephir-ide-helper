@@ -67,6 +67,10 @@ class Parser
      */
     public function parse(string $file)
     {
+        if (! function_exists('zephir_parse_file')) {
+            throw new \RuntimeException('Function `zephir_parse_file` not found.');
+        }
+
         return zephir_parse_file(file_get_contents($file), $file);
     }
 
