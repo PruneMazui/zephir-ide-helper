@@ -1,5 +1,7 @@
-namespace Utils;
+namespace PruneMazui\Zephir\Utils;
 
+use Exception as Ex, Exception;
+use SplFileObject;
 
 /**
  * Sample class Greeting
@@ -43,7 +45,12 @@ class Greeting
         echo "hello world!";
     }
 
-    public final deprecated function deprecatedFunction()
+    public final deprecated function deprecatedFunction(int piyo = 1)
+    {
+        echo "old";
+    }
+
+    public final deprecated function pipipi(piyo = 1.2, fuga=[1, 2, 3], hoge = "'''")
     {
         echo "old";
     }
