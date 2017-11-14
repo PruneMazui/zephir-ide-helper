@@ -1,5 +1,10 @@
 {
     "name": "prune-mazui/zephir-ide-helper",
+    "description": "Make zephir code (.zep) to PHP code completion File.",
+    "keywords": ["zephir", "IDE", "intellisense"],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/PruneMazui/zephir-ide-helper",
     "require": {
         "php": ">=7.0"
     },
