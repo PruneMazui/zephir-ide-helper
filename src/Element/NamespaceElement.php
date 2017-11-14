@@ -15,6 +15,11 @@ class NamespaceElement extends AbstractNamedElement implements EncodableInterfac
     private $classes = [];
 
     /**
+     * @var InterfaceElement[]
+     */
+    private $interfaces = [];
+
+    /**
      * @var UseElement[]
      */
     private $uses = [];
@@ -120,6 +125,40 @@ class NamespaceElement extends AbstractNamedElement implements EncodableInterfac
     }
 
     /**
+     * @return bool
+     */
+    public function hasInterface(): bool
+    {
+        return !! $this->countInterface();
+    }
+
+    /**
+     * @return int
+     */
+    public function countInterface(): int
+    {
+        return count($this->getInterfaces());
+    }
+
+    /**
+     * @return \PruneMazui\ZephirIdeHelper\Element\InterfaceElement[]
+     */
+    public function getInterfaces()
+    {
+        return $this->interfaces;
+    }
+
+    /**
+     * @param InterfaceElement $interface
+     * @return self
+     */
+    public function addInterface(InterfaceElement $interface): self
+    {
+        $this->interfaces[] = $interface;
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      * @see \PruneMazui\ZephirIdeHelper\EncodableInterface::encode()
      */
@@ -131,7 +170,17 @@ class NamespaceElement extends AbstractNamedElement implements EncodableInterfac
             $content .= Util::indent($use->encode());
         }
 
-        $content .= "\n";
+        if (count($this->uses)) {
+            $content .= "\n";
+        }
+
+        foreach ($this->interfaces as $interface) {
+            $content .= Util::indent($interface->encode()) . "\n";
+        }
+
+        if (count($this->interfaces)) {
+            $content .= "\n";
+        }
 
         foreach ($this->classes as $class) {
             $content .= Util::indent($class->encode()) . "\n";

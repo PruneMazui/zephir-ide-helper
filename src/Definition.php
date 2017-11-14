@@ -4,6 +4,7 @@ namespace PruneMazui\ZephirIdeHelper;
 use PruneMazui\ZephirIdeHelper\Element\NamespaceElement;
 use PruneMazui\ZephirIdeHelper\Element\UseElement;
 use PruneMazui\ZephirIdeHelper\Element\ClassElement;
+use PruneMazui\ZephirIdeHelper\Element\InterfaceElement;
 
 class Definition implements EncodableInterface
 {
@@ -55,6 +56,12 @@ class Definition implements EncodableInterface
 
                 case ClassElement::TYPE:
                     $namespace->addClass(ClassElement::factory($row, $comment));
+                    $comment = '';
+                    break;
+
+                case InterfaceElement::TYPE:
+                    $namespace->addInterface(InterfaceElement::factory($row, $comment));
+                    $comment = '';
                     break;
 
                 case self::TYPE_NEXT_CLASS_COMMENT:
@@ -77,7 +84,7 @@ class Definition implements EncodableInterface
         $content = "<?php\n";
 
         foreach ($this->namespaces as $namespace) {
-            $content .= $namespace->encode();
+            $content .= $namespace->encode() . "\n";
         }
 
         return $content;
