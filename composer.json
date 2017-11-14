@@ -16,5 +16,8 @@
         "psr-4": {
             "PruneMazui\\ZephirIdeHelper\\" : "src"
         }
-    }
+    },
+    "bin": [
+        "bin/zephir-ide-helper"
+    ]
 }
