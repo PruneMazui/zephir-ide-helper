@@ -51,7 +51,7 @@ class ParserTest extends TestCase
 
         $file = __DIR__ . '/../files/greeting.zep';
 
-        $excepted = include __DIR__ . '/../files/parse_result.php';
+        $excepted = include __DIR__ . '/../files/greeting_parse_result.php';
         $result = (new Parser())->parse($file);
 
         $excepted = $this->excludeIgnoreParseResult($excepted);
