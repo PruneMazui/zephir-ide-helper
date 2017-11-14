@@ -15,10 +15,5 @@
         "psr-4": {
             "PruneMazui\\ZephirIdeHelper\\" : "src"
         }
-    },
-    "scripts": {
-        "pre-update-cmd": [
-            "php -r \"if (!function_exists('zephir_parse_file')) {throw new \\Exception();}\""
-        ]
     }
 }
