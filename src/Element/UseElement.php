@@ -51,6 +51,10 @@ class UseElement implements EncodableInterface
             $ret->aliases[] = $content;
         }
 
+        if (empty($ret->aliases)) {
+            throw new DefinitionException('Aliases is empty.');
+        }
+
         return $ret;
     }
 

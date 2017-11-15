@@ -84,7 +84,7 @@ class Parser
         }
 
         foreach ($this->files as $file) {
-            yield $this->parse($file);
+            yield realpath($file) => $this->parse($file);
         }
     }
 }

@@ -3,6 +3,7 @@ namespace PruneMazui\ZephirIdeHelper\Tests;
 
 use PHPUnit\Framework\TestCase;
 use PruneMazui\ZephirIdeHelper\Definition;
+use PruneMazui\ZephirIdeHelper\ParseResultException;
 
 class DefinitionTest extends TestCase
 {
@@ -43,5 +44,19 @@ class DefinitionTest extends TestCase
         require_once __DIR__ . '/../files/__zephir_ide_helper.php';
 
         assertTrue(class_exists('\\PruneMazui\\Zephir\\Utils\\Greeting'));
+    }
+
+    public function testError()
+    {
+        $parse_result = include __DIR__ . '/../files/syntax_error_parse_result.php';
+
+        $definition = new Definition();
+
+        try {
+            $definition->reflectParse($parse_result);
+            $this->fail();
+        } catch (ParseResultException $ex) {
+            $this->addToAssertionCount(1);
+        }
     }
 }
