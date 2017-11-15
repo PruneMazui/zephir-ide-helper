@@ -14,11 +14,36 @@ class UseElement implements EncodableInterface
     private $aliases = [];
 
     /**
+     * @var string[]
+     */
+    private $uniqueNames = [];
+
+    private $excludeConflictMap = [];
+
+    /**
+     * @param array $exclude_conflict_map
+     * @return self
+     */
+    public function setExcludeConflictMap(array $exclude_conflict_map): self
+    {
+        $this->excludeConflictMap = $exclude_conflict_map;
+        return $this;
+    }
+
+    /**
      * @return string[]
      */
     public function getAliases(): array
     {
         return $this->aliases;
+    }
+
+    /**
+     * @var string[]
+     */
+    public function getUniqueNames(): array
+    {
+        return $this->uniqueNames;
     }
 
     /**
@@ -44,11 +69,16 @@ class UseElement implements EncodableInterface
 
             $content = $aliase['name'];
 
+            $name_separated = explode('\\', $aliase['name']);
+            $unique_name = end($name_separated);
+
             if (! empty($aliase['alias'])) {
                 $content .= ' as ' . $aliase['alias'];
+                $unique_name = $aliase['alias'];
             }
 
             $ret->aliases[] = $content;
+            $ret->uniqueNames[] = $unique_name;
         }
 
         if (empty($ret->aliases)) {
@@ -64,6 +94,19 @@ class UseElement implements EncodableInterface
      */
     public function encode(): string
     {
-        return 'use ' . implode(', ', $this->getAliases()) . ";\n";
+        $aliases = $this->getAliases();
+
+        foreach ($this->uniqueNames as $key => $unique_name) {
+            if (in_array($unique_name, $this->excludeConflictMap)) {
+                unset($aliases[$key]);
+            }
+        }
+
+
+        if (! count($aliases)) {
+            return '';
+        }
+
+        return 'use ' . implode(', ', $aliases) . ";\n";
     }
 }
