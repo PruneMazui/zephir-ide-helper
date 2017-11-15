@@ -33,6 +33,14 @@ class CommandRunner
     }
 
     /**
+     * @return LoggerInterface
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    /**
      * @param LoggerInterface optional $logger
      */
     public function __construct(LoggerInterface $logger = null)
@@ -47,7 +55,7 @@ class CommandRunner
         {
             public function log($level, $message, array $context = array())
             {
-                fwrite(STDOUT, $message . "\n");
+                echo $message . "\n";
             }
         };
     }

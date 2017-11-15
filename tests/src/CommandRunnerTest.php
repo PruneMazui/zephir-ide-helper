@@ -4,6 +4,7 @@ namespace PruneMazui\ZephirIdeHelper\Tests;
 use PHPUnit\Framework\TestCase;
 use PruneMazui\ZephirIdeHelper\CommandRunner;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
 class CommandRunnerTest extends TestCase
 {
@@ -57,5 +58,28 @@ class CommandRunnerTest extends TestCase
             'script_file_name',
             __FILE__
         ]));
+
+        assertFalse($runner->run([
+            'script_file_name',
+            __DIR__ . '/not_exist_file'
+        ]));
+    }
+
+    public function testDefaultLogger()
+    {
+        $runner = new CommandRunner();
+        $logger = $runner->getLogger();
+
+        assertInstanceOf(LoggerInterface::class, $logger);
+
+        $content = 'logging test';
+        ob_start();
+
+        $logger->info($content);
+
+        $flushed = ob_get_contents();
+        ob_end_clean();
+
+        assertContains($content, $flushed);
     }
 }
