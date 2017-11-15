@@ -166,8 +166,14 @@ class NamespaceElement extends AbstractNamedElement implements EncodableInterfac
     {
         $content = 'namespace ' . $this->getName() . "\n{\n";
 
+        $exclude_map = [];
+        foreach ($this->classes as $class) {
+            $exclude_map[] = $class->getName();
+        }
+
         foreach ($this->uses as $use) {
-            $content .= Util::indent($use->encode());
+            $content .= Util::indent($use->setExcludeConflictMap($exclude_map)->encode());
+            $exclude_map = array_merge($exclude_map, $use->getUniqueNames());
         }
 
         if (count($this->uses)) {
