@@ -1,6 +1,9 @@
 <?php
 namespace PruneMazui\ZephirIdeHelper;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\AbstractLogger;
+
 class CommandRunner
 {
     private static $argmentMap = [
@@ -14,6 +17,11 @@ class CommandRunner
     private $target = '';
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Handle operation
      *
      * @codeCoverageIgnore
@@ -22,6 +30,26 @@ class CommandRunner
     public static function exec(): bool
     {
         return (new static())->run($_SERVER['argv']);
+    }
+
+    /**
+     * @param LoggerInterface optional $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
+    {
+        if (! is_null($logger)) {
+            $this->logger = $logger;
+            return;
+        }
+
+        // logging stdout
+        $this->logger = new class() extends AbstractLogger
+        {
+            public function log($level, $message, array $context = array())
+            {
+                fwrite(STDOUT, $message . "\n");
+            }
+        };
     }
 
     public function run(array $arg): bool
@@ -90,19 +118,19 @@ class CommandRunner
             }
 
             if (file_put_contents($this->file, $definition->encode())) {
-                $this->notify("The php file generated. \n" . realpath($this->file));
+                $this->logger->info("The php file generated. \n" . realpath($this->file));
                 return true;
             }
 
-            $this->notify("Failed to write php file.");
+            $this->logger->error("Failed to write php file.");
             return false;
 
         } catch (DefinitionException $x) {
-            $this->notify("Parse error occured. " . $ex->getMessage());
+            $this->logger->error("Parse error occured. " . $ex->getMessage());
             return false;
 
         } catch (\Exception $ex) {
-            $this->notify("Fatal error occured. " . $ex->getMessage());
+            $this->logger->error("Fatal error occured. " . $ex->getMessage());
             return false;
         }
     }
@@ -119,11 +147,6 @@ Usage: {$this->executedScriptName} [-option] target
     -f, --file  Export php file name. (Default: __zephir_ide_helper.php)
 EOC;
 
-        $this->notify(trim($content));
-    }
-
-    private function notify(string $content)
-    {
-        echo $content . "\n";
+        $this->logger->info(trim($content));
     }
 }
