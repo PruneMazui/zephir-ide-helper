@@ -17,7 +17,7 @@ class ParseResultException extends \RuntimeException
             throw new \RuntimeException('Unknown parse error occured.');
         }
 
-        $messege = $params['message'] ?? '';
+        $message = $params['message'] ?? '';
 
         if (isset ($params['file'])) {
             $message .= ' : ' . $params['file'];
