@@ -38,10 +38,15 @@ class Definition implements EncodableInterface
 
     /**
      * @param array $parse_result
+     * @throws ParseResultException
      * @return self
      */
     public function reflectParse(array $parse_result): Definition
     {
+        if (! is_array(current($parse_result))) {
+            throw ParseResultException::factory($parse_result);
+        }
+
         $namespace = $this->makeNamespace(current($parse_result));
         $comment = '';
 

@@ -1,13 +1,12 @@
 namespace PruneMazui\Zephir\Utils;
 
-
 /**
- * abstract class
+ *
  */
-abstract class Hoge
+class Hoge
 {
    public function test()
    {
-       return "test";
+       return "not end of statement"
    }
 }

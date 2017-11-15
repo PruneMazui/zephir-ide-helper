@@ -112,11 +112,19 @@ class CommandRunner
                 return false;
             }
 
+            $this->logger->debug("Process start");
+
             $definition = new Definition();
-            foreach ($parser->getParseResultGenerator() as $result) {
-                $definition->reflectParse($result);
+            foreach ($parser->getParseResultGenerator() as $file => $result) {
+                try {
+                    $this->logger->debug("Parsing ... {$file}");
+                    $definition->reflectParse($result);
+                } catch (ParseResultException $ex) {
+                    $this->logger->warning($ex->getMessage());
+                }
             }
 
+            $this->logger->debug("Generating php code ...");
             if (file_put_contents($this->file, $definition->encode())) {
                 $this->logger->info("The php file generated. \n" . realpath($this->file));
                 return true;

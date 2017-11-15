@@ -3,6 +3,7 @@ namespace PruneMazui\ZephirIdeHelper\Tests;
 
 use PHPUnit\Framework\TestCase;
 use PruneMazui\ZephirIdeHelper\CommandRunner;
+use Psr\Log\NullLogger;
 
 class CommandRunnerTest extends TestCase
 {
@@ -17,21 +18,19 @@ class CommandRunnerTest extends TestCase
             unlink($file);
         }
 
-        ob_start();
-        assertTrue((new CommandRunner())->run([
+        assertTrue((new CommandRunner(new NullLogger()))->run([
             'script_file_name',
             '-f',
             $file,
             __DIR__ . '/../files',
         ]));
-        ob_end_clean();
 
         assertTrue(file_exists($file));
     }
 
     public function testFailure()
     {
-        $runner = new CommandRunner();
+        $runner = new CommandRunner(new NullLogger());
 
         try {
             $runner->run([]);
@@ -39,8 +38,6 @@ class CommandRunnerTest extends TestCase
         } catch (\RuntimeException $ex) {
             $this->addToAssertionCount(1);
         }
-
-        ob_start();
 
         assertFalse($runner->run(['script_file_name']));
 
@@ -60,7 +57,5 @@ class CommandRunnerTest extends TestCase
             'script_file_name',
             __FILE__
         ]));
-
-        ob_end_clean();
     }
 }
