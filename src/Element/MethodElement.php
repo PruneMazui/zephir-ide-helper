@@ -197,6 +197,7 @@ class MethodElement extends AbstractNamedElement implements EncodableInterface, 
                     break;
 
                 case 'toString':
+                case '__toString':
                     $elem = new self();
                     $elem->name = '__toString';
                     $ret[] = $elem;
