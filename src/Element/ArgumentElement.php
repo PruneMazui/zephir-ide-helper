@@ -8,8 +8,12 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
 {
     const TYPE = 'parameter';
 
-    private static $excludeDataTypeMap = [
-        'variable'
+    private static $dataTypeConvertMap = [
+        'variable' => null,
+        'object' => null,
+        'resource' => null,
+        'long'     => 'int',
+        'double'   => 'float',
     ];
 
     private $dataType = null;
@@ -67,7 +71,9 @@ class ArgumentElement extends AbstractNamedElement implements EncodableInterface
         }
 
         $data_type = $params['data-type'] ?? null;
-        if (! in_array($data_type, self::$excludeDataTypeMap)) {
+        if (array_key_exists($data_type, self::$dataTypeConvertMap)) {
+            $ret->dataType = self::$dataTypeConvertMap[$data_type];
+        } else {
             $ret->dataType = $data_type;
         }
 
