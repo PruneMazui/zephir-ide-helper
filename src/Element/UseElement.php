@@ -68,7 +68,9 @@ class UseElement implements EncodableInterface
             }
 
             $content = $aliase['name'];
-            $unique_name = end(explode('\\', $aliase['name']));
+
+            $name_separated = explode('\\', $aliase['name']);
+            $unique_name = end($name_separated);
 
             if (! empty($aliase['alias'])) {
                 $content .= ' as ' . $aliase['alias'];
