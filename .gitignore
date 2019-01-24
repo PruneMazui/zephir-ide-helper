@@ -9,3 +9,5 @@ __zephir_ide_helper.php
 /.vagrant
 /develop
 /tests/files/output.php
+
+.idea

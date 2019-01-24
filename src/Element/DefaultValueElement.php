@@ -78,6 +78,8 @@ class DefaultValueElement implements EncodableInterface
                 }
                 return '[' . implode(', ', $row) . ']';
 
+            case 'bool':
+                return $this->value === 'true' ? "true" : "false";
             case 'string':
             default:
                 return "'{$this->escape($this->value)}'";
